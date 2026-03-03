@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cobrinha - Aula 1</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        background: #f4f4f4;
+      }
+
+      .pagina {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      #tela {
+        background: #ffffff;
+        border: 2px solid #222222;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="pagina">
+      <h1>Jogo da Cobrinha - Aula 1</h1>
+      <p>Versão inicial para ensinar a base do jogo.</p>
+      <p>Use as setas do teclado para mudar a direção.</p>
+      <canvas id="tela" width="400" height="400"></canvas>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
