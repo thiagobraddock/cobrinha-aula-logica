@@ -1,8 +1,18 @@
 /*
   JOGO DA COBRINHA - AULA 1
 
-  Nesta versão, deixamos apenas o começo do código pronto.
-  O restante vira um checklist comentado para construir durante a aula.
+  Esta versão representa o ponto em que a turma parou na Aula 1.
+  O código foi desenvolvido até o item 8.
+
+  O que já existe:
+  - acesso ao canvas
+  - configuração do tabuleiro
+  - velocidade definida
+  - variáveis principais
+  - estado inicial da cobrinha
+  - desenho da cobrinha na tela
+
+  O restante fica para a Aula 2.
 */
 
 // Pegamos do HTML o canvas que será usado como tela do jogo.
@@ -11,32 +21,68 @@ const tela = document.getElementById("tela");
 // Pegamos o contexto 2D, que é a ferramenta usada para desenhar no canvas.
 const contexto = tela.getContext("2d");
 
+// 1. Tamanho de cada quadrado do jogo.
+const tamanhoBloco = 20;
+
+// 2. Quantidade de blocos que cabem na largura do canvas.
+const quantidadeDeBlocos = tela.width / tamanhoBloco;
+
+// 3. Velocidade do jogo.
+// Ainda não vamos usar nesta aula, mas ela já fica definida.
+const velocidadeDoJogo = 200;
+
+// 4. Array com as partes da cobrinha.
+let cobrinha = [];
+
+// 5. Direção inicial da cobrinha.
+// Também ainda não vamos usar neste momento, mas já deixamos preparado.
+let direcaoX = 1;
+let direcaoY = 0;
+
+// 6. Função principal para montar o estado inicial do jogo.
+function iniciarJogo() {
+  criarCobrinhaInicial();
+  desenharJogo();
+}
+
+// 7. Criamos a cobrinha com três partes.
+function criarCobrinhaInicial() {
+  cobrinha = [
+    { x: 10, y: 10 },
+    { x: 9, y: 10 },
+    { x: 8, y: 10 },
+  ];
+}
+
 /*
-  CHECKLIST DA AULA
+  8. Desenhar o jogo.
 
-  1. Criar a constante tamanhoBloco
-  Ideia: definir o tamanho de cada quadrado do jogo.
+  Nesta etapa ainda não vamos separar em muitas funções.
+  Por isso, o desenho já acontece todo aqui:
+  - limpamos a tela
+  - escolhemos a cor verde
+  - percorremos o array da cobrinha
+  - desenhamos cada parte com fillRect
+*/
+function desenharJogo() {
+  contexto.clearRect(0, 0, tela.width, tela.height);
+  contexto.fillStyle = "#2e7d32";
 
-  2. Criar a constante quantidadeDeBlocos
-  Ideia: descobrir quantos blocos cabem na largura da tela.
+  for (let parte of cobrinha) {
+    contexto.fillRect(
+      parte.x * tamanhoBloco,
+      parte.y * tamanhoBloco,
+      tamanhoBloco,
+      tamanhoBloco
+    );
+  }
+}
 
-  3. Criar a constante velocidadeDoJogo
-  Ideia: definir de quanto em quanto tempo a cobrinha vai se mover.
+// Chamamos a função inicial para já mostrar a cobrinha na tela.
+iniciarJogo();
 
-  4. Criar a variável cobrinha
-  Ideia: guardar as partes do corpo em um array.
-
-  5. Criar as variáveis direcaoX e direcaoY
-  Ideia: guardar para onde a cobrinha está andando.
-
-  6. Criar a função iniciarJogo
-  Ideia: preparar o estado inicial antes do jogo começar.
-
-  7. Criar a função criarCobrinhaInicial
-  Ideia: montar a cobrinha com três partes.
-
-  8. Criar a função desenharJogo
-  Ideia: centralizar o desenho de tudo que aparece na tela.
+/*
+  ITENS QUE FICAM PARA A AULA 2
 
   9. Criar a função limparTela
   Ideia: apagar o quadro anterior antes de desenhar o próximo.
