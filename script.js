@@ -2,7 +2,7 @@
   JOGO DA COBRINHA - AULA 1
 
   Esta versão representa o ponto em que a turma parou na Aula 1.
-  O código foi desenvolvido até o item 8.
+  O código foi desenvolvido até o item 14.
 
   O que já existe:
   - acesso ao canvas
@@ -11,6 +11,8 @@
   - variáveis principais
   - estado inicial da cobrinha
   - desenho da cobrinha na tela
+  - funções de movimento
+  - função para atravessar as bordas
 
   O restante fica para a Aula 2.
 */
@@ -54,27 +56,72 @@ function criarCobrinhaInicial() {
   ];
 }
 
-/*
-  8. Desenhar o jogo.
-
-  Nesta etapa ainda não vamos separar em muitas funções.
-  Por isso, o desenho já acontece todo aqui:
-  - limpamos a tela
-  - escolhemos a cor verde
-  - percorremos o array da cobrinha
-  - desenhamos cada parte com fillRect
-*/
+// 8. Função principal para desenhar o jogo.
 function desenharJogo() {
+  limparTela();
+  desenharCobrinha();
+}
+
+// 9. Apagar o desenho anterior antes de desenhar o próximo.
+function limparTela() {
   contexto.clearRect(0, 0, tela.width, tela.height);
+}
+
+// 10. Percorrer o array da cobrinha e desenhar cada parte.
+function desenharCobrinha() {
   contexto.fillStyle = "#2e7d32";
 
   for (let parte of cobrinha) {
-    contexto.fillRect(
-      parte.x * tamanhoBloco,
-      parte.y * tamanhoBloco,
-      tamanhoBloco,
-      tamanhoBloco
-    );
+    desenharBloco(parte.x, parte.y);
+  }
+}
+
+// 11. Desenhar um único quadrado da cobrinha.
+function desenharBloco(x, y) {
+  contexto.fillRect(
+    x * tamanhoBloco,
+    y * tamanhoBloco,
+    tamanhoBloco,
+    tamanhoBloco
+  );
+}
+
+// 12. Criar uma nova cabeça e mover a cobrinha para frente.
+function moverCobrinha() {
+  const cabecaAtual = cobrinha[0];
+
+  const novaCabeca = {
+    x: cabecaAtual.x + direcaoX,
+    y: cabecaAtual.y + direcaoY,
+  };
+
+  ajustarCabecaNasBordas(novaCabeca);
+
+  cobrinha.unshift(novaCabeca);
+  removerUltimaParte();
+}
+
+// 13. Remover a última parte para manter o mesmo tamanho.
+function removerUltimaParte() {
+  cobrinha.pop();
+}
+
+// 14. Se sair de um lado, reaparecer no outro.
+function ajustarCabecaNasBordas(cabeca) {
+  if (cabeca.x >= quantidadeDeBlocos) {
+    cabeca.x = 0;
+  }
+
+  if (cabeca.x < 0) {
+    cabeca.x = quantidadeDeBlocos - 1;
+  }
+
+  if (cabeca.y >= quantidadeDeBlocos) {
+    cabeca.y = 0;
+  }
+
+  if (cabeca.y < 0) {
+    cabeca.y = quantidadeDeBlocos - 1;
   }
 }
 
@@ -83,24 +130,6 @@ iniciarJogo();
 
 /*
   ITENS QUE FICAM PARA A AULA 2
-
-  9. Criar a função limparTela
-  Ideia: apagar o quadro anterior antes de desenhar o próximo.
-
-  10. Criar a função desenharCobrinha
-  Ideia: percorrer o array da cobrinha e desenhar cada parte.
-
-  11. Criar a função desenharBloco
-  Ideia: desenhar um único quadrado na posição x e y.
-
-  12. Criar a função moverCobrinha
-  Ideia: criar uma nova cabeça e remover a última parte.
-
-  13. Criar a função removerUltimaParte
-  Ideia: manter o tamanho da cobrinha enquanto ela ainda não cresce.
-
-  14. Criar a função ajustarCabecaNasBordas
-  Ideia: se sair de um lado, aparecer no outro.
 
   15. Criar a função mudarDirecao
   Ideia: usar o teclado para trocar os valores de direcaoX e direcaoY.
