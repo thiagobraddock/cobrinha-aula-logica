@@ -1,70 +1,193 @@
 /*
-  JOGO DA COBRINHA - AULA 1
+  JOGO DA COBRINHA - AULA 3
 
-  Nesta versão, deixamos apenas o começo do código pronto.
-  O restante vira um checklist comentado para construir durante a aula.
+  Esta aula continua do ponto em que a Aula 2 terminou.
+  Até a função iniciarJogo, o código é o mesmo da aula anterior.
+
+  Nesta aula, o foco será:
+  - detectar quando a cobrinha encosta na comida
+  - gerar uma nova posição aleatória para a comida
+  - fazer a cobrinha crescer ao comer
+  - mostrar a pontuação na tela
 */
 
-// Pegamos do HTML o canvas que será usado como tela do jogo.
 const tela = document.getElementById("tela");
-
-// Pegamos o contexto 2D, que é a ferramenta usada para desenhar no canvas.
 const contexto = tela.getContext("2d");
 
-/*
-  CHECKLIST DA AULA
+const tamanhoBloco = 20;
+const quantidadeDeBlocos = tela.width / tamanhoBloco;
+const velocidadeDoJogo = 200;
 
-  1. Criar a constante tamanhoBloco
-  Ideia: definir o tamanho de cada quadrado do jogo.
+let cobrinha = [];
+let direcaoX = 1;
+let direcaoY = 0;
+let comida = { x: 5, y: 5 };
 
-  2. Criar a constante quantidadeDeBlocos
-  Ideia: descobrir quantos blocos cabem na largura da tela.
+function criarCobrinhaInicial() {
+  cobrinha = [
+    { x: 10, y: 10 },
+    { x: 9, y: 10 },
+    { x: 8, y: 10 },
+  ];
+}
 
-  3. Criar a constante velocidadeDoJogo
-  Ideia: definir de quanto em quanto tempo a cobrinha vai se mover.
+function limparTela() {
+  contexto.clearRect(0, 0, tela.width, tela.height);
+}
 
-  4. Criar a variável cobrinha
-  Ideia: guardar as partes do corpo em um array.
+function desenharBloco(x, y) {
+  contexto.fillRect(
+    x * tamanhoBloco,
+    y * tamanhoBloco,
+    tamanhoBloco,
+    tamanhoBloco,
+  );
+}
 
-  5. Criar as variáveis direcaoX e direcaoY
-  Ideia: guardar para onde a cobrinha está andando.
+function desenharComida() {
+  contexto.fillStyle = "#d32f2f";
+  desenharBloco(comida.x, comida.y);
+}
 
-  6. Criar a função iniciarJogo
-  Ideia: preparar o estado inicial antes do jogo começar.
+function desenharCobrinha() {
+  contexto.fillStyle = "#2e7d32";
 
-  7. Criar a função criarCobrinhaInicial
-  Ideia: montar a cobrinha com três partes.
+  for (let parte of cobrinha) {
+    desenharBloco(parte.x, parte.y);
+  }
+}
 
-  8. Criar a função desenharJogo
-  Ideia: centralizar o desenho de tudo que aparece na tela.
+function desenharJogo() {
+  limparTela();
+  desenharComida();
+  desenharCobrinha();
+}
 
-  9. Criar a função limparTela
-  Ideia: apagar o quadro anterior antes de desenhar o próximo.
+function removerUltimaParte() {
+  cobrinha.pop();
+}
 
-  10. Criar a função desenharCobrinha
-  Ideia: percorrer o array da cobrinha e desenhar cada parte.
+function ajustarCabecaNasBordas(cabeca) {
+  if (cabeca.x >= quantidadeDeBlocos) {
+    cabeca.x = 0;
+  }
 
-  11. Criar a função desenharBloco
-  Ideia: desenhar um único quadrado na posição x e y.
+  if (cabeca.x < 0) {
+    cabeca.x = quantidadeDeBlocos - 1;
+  }
 
-  12. Criar a função moverCobrinha
-  Ideia: criar uma nova cabeça e remover a última parte.
+  if (cabeca.y >= quantidadeDeBlocos) {
+    cabeca.y = 0;
+  }
 
-  13. Criar a função removerUltimaParte
-  Ideia: manter o tamanho da cobrinha enquanto ela ainda não cresce.
+  if (cabeca.y < 0) {
+    cabeca.y = quantidadeDeBlocos - 1;
+  }
+}
 
-  14. Criar a função ajustarCabecaNasBordas
-  Ideia: se sair de um lado, aparecer no outro.
+function moverCobrinha() {
+  const cabecaAtual = cobrinha[0];
 
-  15. Criar a função mudarDirecao
-  Ideia: usar o teclado para trocar os valores de direcaoX e direcaoY.
+  const novaCabeca = {
+    x: cabecaAtual.x + direcaoX,
+    y: cabecaAtual.y + direcaoY,
+  };
 
-  16. Criar a função atualizarJogo
-  Ideia: mover a cobrinha e depois redesenhar a tela.
+  ajustarCabecaNasBordas(novaCabeca);
+  cobrinha.unshift(novaCabeca);
+  removerUltimaParte();
+}
 
-  17. Ligar o teclado ao jogo
-  Ideia: usar addEventListener para chamar mudarDirecao.
+function mudarDirecao(evento) {
+  if (evento.key === "ArrowUp" && direcaoY !== 1) {
+    direcaoX = 0;
+    direcaoY = -1;
+  }
 
-  18. Iniciar o jogo
-  Ideia: chamar iniciarJogo e depois usar setInterval com atualizarJogo.
-*/
+  if (evento.key === "ArrowDown" && direcaoY !== -1) {
+    direcaoX = 0;
+    direcaoY = 1;
+  }
+
+  if (evento.key === "ArrowLeft" && direcaoX !== 1) {
+    direcaoX = -1;
+    direcaoY = 0;
+  }
+
+  if (evento.key === "ArrowRight" && direcaoX !== -1) {
+    direcaoX = 1;
+    direcaoY = 0;
+  }
+}
+
+function atualizarJogo() {
+  moverCobrinha();
+  desenharJogo();
+}
+
+function iniciarJogo() {
+  criarCobrinhaInicial();
+  desenharJogo();
+}
+
+// A PARTIR DAQUI COMECA A AULA 3
+// Até aqui é o código da Aula 2. O fundo quadriculado é feito no CSS.
+
+// 22. Criar a variável pontuacao
+// Guardar quantas comidas a cobrinha já comeu. Começa em zero.
+// Exemplo: let pontuacao = 0;
+
+// 23. Criar a variável placar
+// Pegar o elemento do HTML que vai mostrar a pontuação.
+// Exemplo: const placar = document.getElementById("placar");
+
+// 24. Criar a função comeuComida
+// Comparar a posição da cabeça com a posição da comida.
+// Se as duas estiverem no mesmo lugar, a cobrinha comeu!
+// Exemplo:
+// function comeuComida() {
+//   const cabeca = cobrinha[0];
+//   return cabeca.x === comida.x && cabeca.y === comida.y;
+// }
+
+// 25. Criar a função numeroAleatorio
+// Gerar um número inteiro entre 0 e a quantidade de blocos do tabuleiro.
+// Math.random() gera um número entre 0 e 1 (ex: 0.73)
+// Math.floor() arredonda para baixo (ex: 14.6 vira 14)
+// Exemplo:
+// function numeroAleatorio() {
+//   return Math.floor(Math.random() * quantidadeDeBlocos);
+// }
+
+// 26. Criar a função criarNovaComida
+// Trocar a posição da comida para um ponto aleatório do tabuleiro.
+// Exemplo:
+// function criarNovaComida() {
+//   comida = {
+//     x: numeroAleatorio(),
+//     y: numeroAleatorio(),
+//   };
+// }
+
+// 27. Criar a função atualizarPlacar
+// Mostrar a pontuação no HTML usando o elemento "placar".
+// Exemplo:
+// function atualizarPlacar() {
+//   placar.textContent = "Pontuação: " + pontuacao;
+// }
+
+// 28. Alterar a função moverCobrinha para a cobrinha crescer
+// A função moverCobrinha já existe lá em cima no código.
+// Trocar o removerUltimaParte() por esta lógica:
+//
+// if (comeuComida()) {
+//   criarNovaComida();
+//   pontuacao = pontuacao + 1;
+//   atualizarPlacar();
+// } else {
+//   removerUltimaParte();
+// }
+
+document.addEventListener("keydown", mudarDirecao);
+iniciarJogo();
+setInterval(atualizarJogo, velocidadeDoJogo);

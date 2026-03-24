@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cobrinha - Aula 1</title>
+    <title>Cobrinha - Aula 3</title>
     <style>
       body {
         margin: 0;
@@ -21,17 +21,21 @@
       }
 
       #tela {
-        background: #ffffff;
+        background-color: #a2d149;
+        background-image:
+          linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px;
         border: 2px solid #222222;
       }
     </style>
   </head>
   <body>
     <main class="pagina">
-      <h1>Jogo da Cobrinha - Aula 1</h1>
-      <p>Versão inicial para ensinar a base do jogo.</p>
-      <p>Use as setas do teclado para mudar a direção.</p>
+      <h1>Jogo da Cobrinha - Aula 3</h1>
+      <p>Comer a comida, crescer e gerar comida em novo lugar.</p>
       <canvas id="tela" width="400" height="400"></canvas>
+      <p id="placar">Pontuação: 0</p>
     </main>
 
     <script src="script.js"></script>
